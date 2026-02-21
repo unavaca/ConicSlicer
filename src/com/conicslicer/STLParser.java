@@ -10,19 +10,24 @@ import java.util.List;
  * <p>When parsing an ASCII STL, recognise the facet normal/vertex structure.</p>
  * <p>When parsing a binary STL, read the 80-byte header and 50-byte records per triangle.</p>
  * <p>An example of an ASCII STL and a binary STL can be found in the resources folder.</p>
+ * 
+ * @author Zach Brinton
+ * @version 2-20-26
  */
 public class STLParser {
 	/**
 	 * This method takes an STL file and returns the list of all triangles in that STL.
-	 * @param file: an STL file representing a model to be sliced.
-	 * @return List<Triangle>: a list of all the triangle objects found in that STL file.
+	 * 
+	 * @param file an STL file representing the model to be sliced.
+	 * @return a list of all the triangle objects found in the given STL file.
 	 */
-	public List<Triangle> parse(File file) {
+	public static List<Triangle> parse(File file) {
 		throw new UnsupportedOperationException();
+		// TODO
 	}
 	
-	private boolean isAscii() {
+	private static boolean isAscii(File file) {
 		throw new UnsupportedOperationException();
-		
+		// TODO
 	}
 }
