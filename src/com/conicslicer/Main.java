@@ -1,5 +1,7 @@
 package com.conicslicer;
 
+import java.io.File;
+
 /**
  * Completes the process of generating conic G-code from an STL file.
  * 

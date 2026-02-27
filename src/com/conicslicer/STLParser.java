@@ -1,6 +1,9 @@
 package com.conicslicer;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -15,19 +18,47 @@ import java.util.List;
  * @version 2-20-26
  */
 public class STLParser {
+	private String _filePath;
+	private List<Triangle> _mesh;
+	
+	/**
+	 * Sets the file and 
+	 * @param file
+	 */
+	public STLParser(String filePath) {
+		_filePath = filePath;
+		
+		_mesh = isAscii() ? parseAscii() : parseBinary();
+	}
+	
+	public List<Triangle> getMesh() {
+		return _mesh;
+	}
+	
 	/**
 	 * This method takes an STL file and returns the list of all triangles in that STL.
 	 * 
 	 * @param file an STL file representing the model to be sliced.
-	 * @return a list of all the triangle objects found in the given STL file.
 	 */
-	public static List<Triangle> parse(File file) {
-		throw new UnsupportedOperationException();
-		// TODO
+	private List<Triangle> parseAscii() {		
+		try {
+			long linesCount = Files.lines(Paths.get(_filePath)).count();
+		} catch (IOException e) {
+			System.err.println("IOException: file path \"" + _filePath + "\" not found\nError message: " + e.getMessage());
+		}
+		
+		
+		
+		return null;
 	}
 	
-	private static boolean isAscii(File file) {
-		throw new UnsupportedOperationException();
+	private List<Triangle> parseBinary() {
 		// TODO
+		return null;
+	}
+	
+	private boolean isAscii() {
+		// TODO
+		return true;
 	}
 }

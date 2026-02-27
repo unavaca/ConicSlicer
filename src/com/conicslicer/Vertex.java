@@ -7,5 +7,15 @@ package com.conicslicer;
  * @version 2-20-26
  */
 public class Vertex {
-	// TODO
+	public float x;
+	public float y;
+	public float z;
+	
+	public Vertex(float x, float y, float z) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+	}
+	
+	
 }
