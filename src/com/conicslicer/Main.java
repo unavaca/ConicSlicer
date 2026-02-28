@@ -1,6 +1,7 @@
 package com.conicslicer;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Completes the process of generating conic G-code from an STL file.
@@ -23,16 +24,29 @@ import java.io.File;
  * @version 2-20-26
  */
 public class Main {
+	private static final int refineThreshold = 3;
+	private static final double filamentDiameter = 1.75d;
+	private static final int feedrates = -1;
+	private static final int centerX = 0;
+	private static final int centerY = 0;
+	private static final String resultFilePath = "example.gcode";
+	
 	/**
 	 * As described by the method header.
 	 * 
 	 * @param args // TODO explain accepted arguments
 	 */
 	public static void main(String[] args) {
-		System.out.println("Hello G-code");
+		List<Triangle> mesh = STLParser.parse("example.stl");
+		// mesh = MeshRefiner.refine(mesh, refineThreshold);
+		// mesh = ConicMapper.transform(mesh);
+		// List<ToolPath> slicedMesh = Slicer.slice(mesh);
+		// GCodeGenerator.generate(slicedMesh, filamentDiameter, feedrates);
+		// GCodeBackTransformer.transform(gCodeFile, centerX, centerY);
+		// saveConicalGCode(resultFilePath);
 	}
 	
-	private static void saveConicalGCode(File file) {
+	private static void saveConicalGCode(String filePath) {
 		throw new UnsupportedOperationException();
 		// TODO
 	}
