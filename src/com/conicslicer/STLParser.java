@@ -1,9 +1,9 @@
 package com.conicslicer;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,24 +15,15 @@ import java.util.List;
  * <p>An example of an ASCII STL and a binary STL can be found in the resources folder.</p>
  * 
  * @author Zach Brinton
- * @version 2-20-26
+ * @version 2-27-26
  */
 public class STLParser {
-	private String _filePath;
-	private List<Triangle> _mesh;
-	
 	/**
 	 * Sets the file and 
 	 * @param file
 	 */
-	public STLParser(String filePath) {
-		_filePath = filePath;
-		
-		_mesh = isAscii() ? parseAscii() : parseBinary();
-	}
-	
-	public List<Triangle> getMesh() {
-		return _mesh;
+	public static List<Triangle> parse(String filePath) {
+		return isAscii() ? parseAscii(filePath) : parseBinary(filePath);
 	}
 	
 	/**
@@ -40,24 +31,25 @@ public class STLParser {
 	 * 
 	 * @param file an STL file representing the model to be sliced.
 	 */
-	private List<Triangle> parseAscii() {		
+	private static List<Triangle> parseAscii(String filePath) {		
 		try {
-			long linesCount = Files.lines(Paths.get(_filePath)).count();
+			long linesCount = Files.lines(Paths.get(filePath)).count();
 		} catch (IOException e) {
-			System.err.println("IOException: file path \"" + _filePath + "\" not found\nError message: " + e.getMessage());
+			System.err.println("IOException: file path \"" + filePath + "\" not found\nError message: " + e.getMessage());
 		}
 		
+		List<Triangle> mesh = new ArrayList<>();
 		
 		
-		return null;
+		return mesh;
 	}
 	
-	private List<Triangle> parseBinary() {
+	private static List<Triangle> parseBinary(String filePath) {
 		// TODO
 		return null;
 	}
 	
-	private boolean isAscii() {
+	private static boolean isAscii() {
 		// TODO
 		return true;
 	}
