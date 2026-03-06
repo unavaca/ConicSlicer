@@ -1,12 +1,14 @@
 package com.conicslicer;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Completes the process of generating conic G-code from an STL file.
  * 
- * <p>Does the following:</p>
+ * 
+ * <p>Ignore this:</p>@deprecated
  * <ol>
  * <li>Parse the STL: {@link STLParser}</li>
  * <li>Refine the mesh: {@link MeshRefiner}</li>
@@ -17,11 +19,26 @@ import java.util.List;
  * <li>Save the result</li>
  * </ol>
  * 
+ * <p>New pipeline</p>
+ * <ol>
+ * <li>Load triangles: {@link STLParser}</li>
+ * <li></li>
+ * <li></li>
+ * <li></li>
+ * <li></li>
+ * <li></li>
+ * <li></li>
+ * <li></li>
+ * <li></li>
+ * <li></li>
+ * </ol>
+ * 
+ * 
  * <p>Accepts command-line arguments for the STL path, cone center and direction, layer height,
  * extrusion width, and output file names.</p>
  * 
  * @author Zach Brinton
- * @version 2-20-26
+ * @version 3-6-26
  */
 public class Main {
 	private static final int refineThreshold = 3;
@@ -31,13 +48,33 @@ public class Main {
 	private static final int centerY = 0;
 	private static final String resultFilePath = "example.gcode";
 	
-	/**
-	 * As described by the method header.
-	 * 
-	 * @param args // TODO explain accepted arguments
-	 */
-	public static void main(String[] args) {
-		List<Triangle> mesh = STLParser.parse("example.stl");
+	public static void main(String[] args) throws IOException {
+		// 1) Read args
+		File stl = new File(args[0]);
+		File out = new File(args[1]);
+		
+		// TODO make the settings read args.
+		// Settings settings = Settings.defaults();
+		List<Triangle> mesh = STLParser.parse(stl);
+		
+		// Choose conic axis center (settings) -- user provided (cx, cy) / default to model center in XY from bounds
+		
+		// Compute s range
+		
+		// Prepare writers/planners
+		
+		// Slice each conic layer
+		
+		// Stitch segments -> loops
+		
+		// Toolpaths
+		
+		// Emit G-code
+	}
+	
+	/* @deprecated */
+	public static void deprecatedMain(String[] args) {
+		// List<Triangle> mesh = STLParser.parse("example.stl");
 		// mesh = MeshRefiner.refine(mesh, refineThreshold);
 		// mesh = ConicMapper.transform(mesh);
 		// List<ToolPath> slicedMesh = Slicer.slice(mesh);
