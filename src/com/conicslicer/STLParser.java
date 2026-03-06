@@ -15,7 +15,7 @@ import java.util.List;
  * <p>An example of an ASCII STL and a binary STL can be found in the resources folder.</p>
  * 
  * @author Zach Brinton
- * @version 2-27-26
+ * @version 3-6-26
  */
 public class STLParser {
 	/**

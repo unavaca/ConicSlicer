@@ -4,11 +4,12 @@ package com.conicslicer;
  * Represents a single vertex of dimension three.
  * 
  * <p>Coordinates are shown as the three floats x, y, and z.</p>
+ * <p>Note the interchanging use of the term vector to describe this vertex.</p>
  * 
  * @author Zach Brinton
  * @version 3-5-26
  */
-public class Vertex {
+public final class Vertex {
 	public float x;
 	public float y;
 	public float z;
