@@ -19,8 +19,8 @@ import java.util.Optional;
  * flat appearing as a line segment rather than a true triangle. Such triangles
  * have an area of zero.</p>
  * 
- * @author Zach Brinton
- * @version 3-5-26
+ * @author Zach Brinton and GPT 5.2
+ * @version 3-6-26
  */
 public final class Triangle {
 	public final Vertex normal;
@@ -30,95 +30,14 @@ public final class Triangle {
 	public final Vertex v3;
 	
 	public Triangle(Vertex normal, Vertex v1, Vertex v2, Vertex v3) {
-		this.normal = normal;
-		this.v1 = v1;
-		this.v2 = v2;
-		this.v3 = v3;
+	    if (normal == null || v1 == null || v2 == null || v3 == null) {
+	        throw new IllegalArgumentException("normal and vertices must be non-null");
+	    }
+	    this.normal = normal;
+	    this.v1 = v1;
+	    this.v2 = v2;
+	    this.v3 = v3;
 	}
-	
-	/**
-	 * Computes the geometric normal from the vertices using the right-hand rule.
-	 * 
-     * <p>Steps:
-     * <ol>
-     *   <li>Compute two edges: e1 = v2 - v1 and e2 = v3 - v1</li>
-     *   <li>Cross product: n = e1 x e2 (perpendicular to the triangle)</li>
-     *   <li>Normalize: n / |n| to make it unit length</li>
-     * </ol>
-     * </p>
-     *
-     * <p>If the vertices are collinear (degenerate triangle), the cross product is (0,0,0),
-     * so the returned normal will be (0,0,0).</p>
-     *
-     * @return the computed unit normal (or (0,0,0) for degenerate triangles)
-	 */
-	public Vertex computedNormal() {
-		Vertex e1 = v2.subtract(v1);
-		Vertex e2 = v3.subtract(v1);
-		return e1.cross(e2).normalized();
-	}
-	
-	/**
-	 * Computes the area of this triangle.
-	 * 
-	 * <p>The area is half the length of the cross product of two edge vectors:
-	 * {@code area = 0.5 * |(v2 - v1) x (v3 - v1)|}.</p>
-	 * 
-	 * @return triangle area (0 for degenerate triangles)
-	 */
-	public float area() {
-		Vertex e1 = v2.subtract(v1);
-		Vertex e2 = v3.subtract(v1);
-		return 0.5f * e1.cross(e2).length();
-	}
-	
-	/**
-	 * The centroid of a triangle is the average of its three vertices.
-	 * 
-	 * <p>This is the "center point" of the triangle. It is also calculated
-	 * by drawing a perpendicular line from the middle of each edge in a
-	 * triangle, and seeing where they intersect.</p>
-	 * 
-	 * @return centroid point
-	 */
-	public Vertex centroid() {
-		return new Vertex(
-			(v1.x + v2.x + v3.x) / 3f,
-			(v1.y + v2.y + v3.y) / 3f,
-			(v1.z + v2.z + v3.z) / 3f 
-		);
-	}
-	
-	
-	@Override
-	public String toString() {
-		return "Triangle(normal=" + normal + ", v1=" + v1 + ", v2=" + v2 + ", v3=" + v3 + ")";
-	}
-	
-    /**
-     * Checks exact equality of two triangles (exact float-bit equality through Vertex.equals).
-     *
-     * <p>Note: We might have to introduce a tolerance in the future because sometimes there
-     * are very slight discrepancies in STL files and the exact equality is too strict.</p>
-     *
-     * @param o another object
-     * @return true if all fields are exactly equal
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Triangle t)) return false;
-        return normal.equals(t.normal) && v1.equals(t.v1) && v2.equals(t.v2) && v3.equals(t.v3);
-    }
-
-    @Override
-    public int hashCode() {
-        int h = 17;
-        h = 31 * h + normal.hashCode();
-        h = 31 * h + v1.hashCode();
-        h = 31 * h + v2.hashCode();
-        h = 31 * h + v3.hashCode();
-        return h;
-    }
     
     /**
      * Computes the intersection between this triangle and the implicit surface f(p)=0.
@@ -175,19 +94,46 @@ public final class Triangle {
     /**
      * Adds the intersection point between an edge (a->b) and the isosurface f=0, if it exists.
      *
-     * <p>We use linear interpolation along the edge:
-     * If fa and fb have opposite signs, then crossing occurs at:
+     * <p>This method examines a single triangle edge with endpoints {@code a} and {@code b}.
+     * The scalar field values at those endpoints are {@code fa = f(a)} and {@code fb = f(b)}.</p>
      *
+     * <p>Cases handled:</p>
+     * <ul>
+     *   <li>If both endpoints are “on” the surface (|f| <= eps), the whole edge lies on the surface
+     *       (degenerate/ambiguous), so nothing is added.</li>
+     *   <li>If exactly one endpoint is on the surface, that endpoint is used as the intersection point.</li>
+     *   <li>If {@code fa} and {@code fb} have opposite signs, the surface crosses the edge at one point.
+     *       We find it by linear interpolation.</li>
+     * </ul>
+     *
+     * <p>Interpolation math (when crossing occurs):</p>
      * <pre>
      * t = fa / (fa - fb)
-     * p = a + t*(b-a)
+     * p = a + t * (b - a)
      * </pre>
      *
-     * <p>We also handle endpoint-on-surface cases (|f| <= eps).</p>
+     * <p>We also deduplicate points: if the new intersection point is within {@code eps} of an existing
+     * point already stored in {@code out}, we do not add it again.</p>
      *
-     * @return updated count, or count+1 if it would exceed 2 distinct points
+     * @param a one endpoint of the edge
+     * @param fa scalar field value at {@code a} (fa = f(a))
+     * @param b the other endpoint of the edge
+     * @param fb scalar field value at {@code b} (fb = f(b))
+     * @param eps tolerance used for:
+     *            (1) deciding if a point is “on” the surface (|f| <= eps),
+     *            (2) deduplicating points (distance <= eps),
+     *            (3) guarding against unstable interpolation when |fa - fb| is very small
+     * @param out an array that stores up to 2 distinct intersection points found so far
+     * @param count how many points in {@code out} are currently valid (0, 1, or 2)
+     * @return the updated count. If it returns {@code count + 1} when {@code count} was already 2,
+     *         that signals “too many distinct points” (a degenerate situation for slicing).
      */
-    private static int addEdgeIntersection(Vertex a, float fa, Vertex b, float fb, float eps, Vertex[] out, int count) {
+    private static int addEdgeIntersection(
+        Vertex a, float fa,
+        Vertex b, float fb,
+        float eps,
+        Vertex[] out, int count
+    ) {
         boolean aOn = Math.abs(fa) <= eps;
         boolean bOn = Math.abs(fb) <= eps;
 
@@ -205,7 +151,13 @@ public final class Triangle {
         } else {
             // Proper sign change => crossing
             if ((fa > 0f && fb < 0f) || (fa < 0f && fb > 0f)) {
-                float t = fa / (fa - fb);
+                float denom = fa - fb;
+                if (Math.abs(denom) <= eps) {
+                    // Interpolation would be unstable; treat as no intersection on this edge.
+                    return count;
+                }
+
+                float t = fa / denom;
                 float x = a.x + t * (b.x - a.x);
                 float y = a.y + t * (b.y - a.y);
                 float z = a.z + t * (b.z - a.z);
@@ -229,6 +181,35 @@ public final class Triangle {
 
         // Too many distinct points (degenerate situation)
         return count + 1;
+    }
+    
+	@Override
+	public String toString() {
+		return "Triangle(normal=" + normal + ", v1=" + v1 + ", v2=" + v2 + ", v3=" + v3 + ")";
+	}
+	
+    /**
+     * Checks exact equality of two triangles (exact float-bit equality through Vertex.equals).
+     *
+     * <p>Note: We might have to introduce a tolerance in the future because sometimes there
+     * are very slight discrepancies in STL files and the exact equality is too strict.</p>
+     *
+     * @param o another object
+     * @return true if all fields are exactly equal
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Triangle t)) return false;
+        return v1.equals(t.v1) && v2.equals(t.v2) && v3.equals(t.v3);
+    }
+
+    @Override
+    public int hashCode() {
+        int h = 17;
+        h = 31 * h + v1.hashCode();
+        h = 31 * h + v2.hashCode();
+        h = 31 * h + v3.hashCode();
+        return h;
     }
 
     /**

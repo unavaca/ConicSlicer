@@ -14,7 +14,7 @@ import java.util.List;
  * <p>When parsing a binary STL, read the 80-byte header and 50-byte records per triangle.</p>
  * <p>An example of an ASCII STL and a binary STL can be found in the resources folder.</p>
  * 
- * @author Zach Brinton
+ * @author Zach Brinton and GPT 5.2
  * @version 3-6-26
  */
 public class STLParser {
