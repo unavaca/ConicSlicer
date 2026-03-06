@@ -3,6 +3,48 @@ package com.conicslicer;
 import java.util.List;
 
 /**
+ * Notes;
+ * 
+ * mesh density. the point is to find the best place to radiate the cone from. least dense starts conically
+ * highest density cartesian or conic
+ * slice normally first
+ * find independent parts of the stl (independent geometries)
+ * 
+ * upside down hand
+ * 
+ * 
+ * think intelligent conic slicing
+ * 
+ * ai tech
+ * 
+ * ai slicer
+ * 
+ * 
+ * lowkey make a normal slicer first
+ * 
+ * 
+ * 
+ *  not a stark transition sometimes
+ *  
+ *  scott's math can be coalessed with the linear slicer
+ * 
+ * 
+ * trace lines of vertices from triangles, ignore contiguousness of triangles.
+ * 
+ * no transform through stl, do it post sliced
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
  * Performs conventional planar slicing on the deformed mesh.
  * 
  * <p>Given a list of triangles, a layer height {@code h} and an extrusion width, it:</p>

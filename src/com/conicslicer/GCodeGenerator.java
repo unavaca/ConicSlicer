@@ -1,5 +1,7 @@
 package com.conicslicer;
 
+import java.util.List;
+
 /**
  * Converts {@link ToolPath} sequences into planar G-code.
  * 

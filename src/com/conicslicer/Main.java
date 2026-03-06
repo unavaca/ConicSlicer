@@ -46,7 +46,8 @@ public class Main {
 	private static final int feedrates = -1;
 	private static final int centerX = 0;
 	private static final int centerY = 0;
-	private static final String resultFilePath = "example.gcode";
+	
+	// TODO get actual settings from scottie
 	
 	public static void main(String[] args) throws IOException {
 		// 1) Read args
@@ -58,6 +59,7 @@ public class Main {
 		List<Triangle> mesh = STLParser.parse(stl);
 		
 		// Choose conic axis center (settings) -- user provided (cx, cy) / default to model center in XY from bounds
+		Settings s = new Settings(2, 3);// TODO input args here);
 		
 		// Compute s range
 		
@@ -70,21 +72,5 @@ public class Main {
 		// Toolpaths
 		
 		// Emit G-code
-	}
-	
-	/* @deprecated */
-	public static void deprecatedMain(String[] args) {
-		// List<Triangle> mesh = STLParser.parse("example.stl");
-		// mesh = MeshRefiner.refine(mesh, refineThreshold);
-		// mesh = ConicMapper.transform(mesh);
-		// List<ToolPath> slicedMesh = Slicer.slice(mesh);
-		// GCodeGenerator.generate(slicedMesh, filamentDiameter, feedrates);
-		// GCodeBackTransformer.transform(gCodeFile, centerX, centerY);
-		// saveConicalGCode(resultFilePath);
-	}
-	
-	private static void saveConicalGCode(String filePath) {
-		throw new UnsupportedOperationException();
-		// TODO
 	}
 }
