@@ -12,15 +12,7 @@ package com.conicslicer;
 public class ConicMapper {
 	
 	public ConicMapper(float cx, float cy, boolean outsideCone) {
-		
-	}
-	
-	public Vertex inverseMap(Vertex p) {
-		
-	}
-	
-	public MappedPose directMap(Vertex p) {
-		
+		// TODO
 	}
 	
 	/**
@@ -41,7 +33,7 @@ public class ConicMapper {
 	 * @param p the deformed vertex (x, y, z') // TODO explain z prime.
 	 * @return // TODO
 	 */
-	private Vertex directMap(Vertex p) {
+	public MappedPose directMap(Vertex p) {
 		throw new UnsupportedOperationException();
 		// TODO
 	}
