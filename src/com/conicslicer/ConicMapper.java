@@ -7,9 +7,21 @@ package com.conicslicer;
  * inverse mapping (pre-deformation) or direct mapping (back-transform).</p>
  * 
  * @author Zach Brinton
- * @version 2-20-26
+ * @version 3-6-26
  */
 public class ConicMapper {
+	
+	public ConicMapper(float cx, float cy, boolean outsideCone) {
+		
+	}
+	
+	public Vertex inverseMap(Vertex p) {
+		
+	}
+	
+	public MappedPose directMap(Vertex p) {
+		
+	}
 	
 	/**
 	 * Lifts each vertex along z by its radial distance from the cone axis; records rotation angle.

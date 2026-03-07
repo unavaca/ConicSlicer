@@ -2,6 +2,8 @@ package com.conicslicer;
 
 import java.util.Optional;
 
+import rubbish.ScalarField;
+
 /**
  * Represents one triangular facet from an STL mesh.
  * 
