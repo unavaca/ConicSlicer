@@ -2,7 +2,12 @@ package com.conicslicer;
 
 public final class Settings {
 	
-	public Settings(int blah, int blahg) {
-		
+	public static Settings fromArgs(String[] args) {
+		// TODO
+		return null;
+	}
+	
+	public void validate() {
+		// TODO
 	}
 }
