@@ -45,6 +45,36 @@ import java.util.List;
  */
 public final class Main {
     public static void main(String[] args) throws Exception {
+    	Settings settings = loadSettings(args);
+    	File inputStl = getInputStl(args);
+    	File outputGcode = getOutputGcode(args);
     	
+    	// 1. Parse the STL into a mesh
+    	Mesh fullMesh = loadMesh(inputStl);
+    	
+    	// 2. Split the mesh at zSplit into lower and upper portions
+    	SplitResult split = splitMesh(fullMesh, settings);
+    	Mesh lowerMesh = split.lower;
+    	Mesh upperMesh = split.upper;
+    	
+    	// 3. Conically process the lower portion
+    	File 
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
