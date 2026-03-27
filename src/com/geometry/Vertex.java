@@ -1,4 +1,4 @@
-package com.conicslicer;
+package com.geometry;
 
 /**
  * Represents a single vertex of dimension three.

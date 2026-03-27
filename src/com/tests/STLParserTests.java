@@ -3,7 +3,9 @@ package com.tests;
 import java.io.File;
 import java.io.IOException;
 
-import com.conicslicer.*;
+import com.geometry.Triangle;
+import com.main.*;
+import com.model.STLParser;
 
 public class STLParserTests {
 

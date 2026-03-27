@@ -1,4 +1,4 @@
-package com.conicslicer;
+package com.geometry;
 
 import java.util.Optional;
 

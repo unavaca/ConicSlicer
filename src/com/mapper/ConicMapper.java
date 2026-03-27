@@ -1,4 +1,7 @@
-package com.conicslicer;
+package com.mapper;
+
+import com.geometry.Vertex;
+import com.main.MappedPose;
 
 /**
  * Provides the conic space mapping functions.

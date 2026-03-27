@@ -1,7 +1,9 @@
-package com.conicslicer;
+package com.output;
 
 import java.io.File;
 import java.io.IOException;
+
+import com.model.Settings;
 
 /**
  * This calls cura for planar gcode, eventually

@@ -1,7 +1,9 @@
-package com.conicslicer;
+package com.output;
 
 import java.io.File;
 import java.io.IOException;
+
+import com.model.Settings;
 
 /**
  * Combines lower (conic) + upper (planar) g code into one file.

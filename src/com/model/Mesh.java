@@ -1,6 +1,9 @@
-package com.conicslicer;
+package com.model;
 
 import java.util.List;
+
+import com.geometry.Bounds;
+import com.geometry.Triangle;
 
 /**
  * Wrapper class for the list of triangles we use to represent a mesh.

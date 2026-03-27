@@ -1,7 +1,11 @@
-package com.conicslicer;
+package com.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.geometry.Triangle;
+import com.geometry.Vertex;
+import com.model.Mesh;
 
 /**
  * @version 3-6-26

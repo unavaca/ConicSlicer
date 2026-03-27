@@ -1,4 +1,4 @@
-package com.conicslicer;
+package com.model;
 
 /**
  * @author Zach Brinton

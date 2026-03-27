@@ -1,4 +1,4 @@
-package com.conicslicer;
+package com.model;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -13,6 +13,9 @@ import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.geometry.Triangle;
+import com.geometry.Vertex;
 
 /**
  * Reads a binary or ASCII STL file and constructs a list of {@link Triangle} objects.

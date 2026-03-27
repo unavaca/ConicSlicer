@@ -1,4 +1,6 @@
-package com.conicslicer;
+package com.mesh_processing;
+
+import com.model.Mesh;
 
 /**
  * 
