@@ -1,5 +1,11 @@
 package com.mesh_processing;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import com.geometry.Triangle;
 import com.model.Mesh;
 
 /**
@@ -9,8 +15,8 @@ import com.model.Mesh;
  * @author Zach Brinton
  */
 public class MeshSplitter {
-	Mesh lowerMesh;
-	Mesh upperMesh;
+	List<Triangle> lowerMesh;
+	List<Triangle> upperMesh;
 	
 	/**
 	 * Creates a splitter that partitions the triangles of a mesh into upper and lower
@@ -33,21 +39,37 @@ public class MeshSplitter {
 		// Iterate over the triangles in the mesh and add them to the upper or lower mesh based on their z-values.
 		// Ignore the y and x values of the vertices.
 		for (var triangle : mesh) {
-			float[] zValues = {
+			ArrayList<Float> zValues = (ArrayList<Float>) Arrays.asList(new Float[]{
 				triangle.v1.z,
 				triangle.v2.z,
 				triangle.v3.z
-			};
+			});
 			
-			// Check each vertex.
-			for (float zValue : zValues) {
-				// If every vertex is above the split plane, add the triangle to the upper mesh.
-				
-				// If every vertex is below the split plane, add the triangle to the lower mesh.
-				
-				// If some vertices are above and some below, we need to split the triangle along zSplit, which results into two trapezoids.
-				
+			// Get max value from zValues.
+			float maxZ = Collections.max(zValues);
+			// Get min value from zValues.
+			float minZ = Collections.min(zValues);
+			
+			boolean onOrAbove = minZ >= zSplit - eps;
+			boolean below = maxZ <= zSplit - eps;
+			
+			// If every vertex is above the split plane, add the triangle to the upper mesh.
+			if (onOrAbove && !below) {
+				upperMesh.add(triangle);
+				return;
 			}
+			
+			// If every vertex is below the split plane, add the triangle to the lower mesh.
+			if (below && !onOrAbove) {
+				lowerMesh.add(triangle);
+				return;
+			}
+			
+			// If some vertices are above and some below, we need to split the triangle along zSplit, which results into two trapezoids.
+			
+			
+			// How to deal with the two trapezoids:
+
 			
 			// Note that a triangle can have some vertices 
 			// above the split plane and some below, so we need to check each vertex separately.
@@ -64,17 +86,17 @@ public class MeshSplitter {
 			
 			
 			
-			boolean onOrAbove = vertexZ >= zSplit - eps;
+			
 			
 			
 		}
 	}
 	
 	public Mesh getLowerMesh() {
-		return upperMesh;
+		return new Mesh(upperMesh);
 	}
 	
 	public Mesh getUpperMesh() {
-		return upperMesh;
+		return new Mesh(upperMesh);
 	}
 }
