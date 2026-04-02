@@ -18,7 +18,7 @@ import com.geometry.Triangle;
 import com.geometry.Vertex;
 
 /**
- * Reads a binary or ASCII STL file and constructs a list of {@link Triangle} objects.
+ * Reads a binary or ASCII STL file and constructs a list of {@link Triangle} objects as a {@link Mesh}.
  * 
  * <p>Each {@link Triangle} stores its three {@link Vertex} points (with x, y, z) and the normal.</p>
  * <p>When parsing an ASCII STL, recognise the facet normal/vertex structure.</p>
@@ -26,30 +26,29 @@ import com.geometry.Vertex;
  * <p>An example of an ASCII STL and a binary STL can be found in the resources folder.</p>
  * 
  * @author Zach Brinton and GPT 5.2
- * @version 3-6-26
+ * @version 4-1-26
  */
 public final class STLParser {
 
-    private STLParser() {
-        // utility class
-    }
+	// Utility class.
+	private STLParser() {}
 
     /**
-     * Parses an STL file and returns the triangles.
+     * Parses an STL file and returns the triangles as a {@link Mesh} object.
      *
      * @param file the STL file
      * @return list of triangles (possibly empty)
      * @throws IOException if the file can't be read or is malformed
      */
-    public static List<Triangle> parse(File file) throws IOException {
+    public static Mesh parse(File file) throws IOException {
         if (file == null) throw new IllegalArgumentException("file must be non-null");
         if (!file.exists()) throw new IOException("File does not exist: " + file);
         if (!file.isFile()) throw new IOException("Not a file: " + file);
 
         if (isAscii(file)) {
-            return parseAscii(file);
+            return new Mesh(parseAscii(file));
         } else {
-            return parseBinary(file);
+            return new Mesh(parseBinary(file));
         }
     }
 

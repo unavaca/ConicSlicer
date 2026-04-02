@@ -1,4 +1,4 @@
-package com.output;
+package com.slicing;
 
 import java.io.File;
 import java.io.IOException;

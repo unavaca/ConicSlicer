@@ -7,7 +7,7 @@ import com.geometry.*;
 import com.mapper.*;
 import com.mesh_processing.*;
 import com.model.*;
-import com.output.*;
+import com.slicing.*;
 
 /**
  * This program converts an input STL into G-code for our 4-axis printer.
@@ -49,8 +49,8 @@ import com.output.*;
  * @author Zach Brinton
  * @version 3-19-26
  */
-public final class Main {
-	public static void main(String[] args) throws Exception {
+public final class OldMain {
+	public static void jain(String[] args) throws Exception {
 	    Settings settings = loadSettings(args);
 	    File inputStl = getInputStl(args);
 	    File outputGcode = getOutputGcode(args);

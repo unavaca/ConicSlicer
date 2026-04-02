@@ -1,4 +1,4 @@
-package com.output;
+package com.slicing;
 
 public class STLWriter {
 

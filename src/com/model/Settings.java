@@ -1,47 +1,38 @@
 package com.model;
 
 /**
+ * Contains the settings passed in by the user on run. Used for slicing.
+ * 
  * @author Zach Brinton
- * @version 3-6-26
+ * @version 4-1-26
  */
 public final class Settings {
-    public final int walls;
-    public final float infill01;
-    public final float zSplit;
+    public final int wallPerimeters;
+    public final float fillPercentage;
 
-    // tolerances + defaults
-    public final float eps = 1e-5f;
+    /**
+     * Constructs a settings object for slicing.
+     * 
+     * @param wallPerimeters number of wall perimeters to print
+     * @param fillPercentage infill percentage from 0.0 to 1.0
+     * @throws IllegalArgumentException if values are invalid
+     */
+    public Settings(int wallPerimeters, float fillPercentage) {
+        if (wallPerimeters < 0)
+            throw new IllegalArgumentException("wallPerimeters must be at least 0.");
 
-    // external slicer command (set this to your slicer CLI string)
-    public final String slicerCommand = "cura"; // placeholder
+        if (fillPercentage < 0.0f || fillPercentage > 1.0f)
+            throw new IllegalArgumentException("fillPercentage must be between 0.0 and 1.0.");
 
-    // which gcode letter for rotation axis on your printer (U or A)
-    public final char rotAxisLetter = 'U';
-
-    // (optional) conic settings
-    public final boolean outsideCone = true;
-
-    private Settings(int walls, float infill01, float zSplit) {
-        this.walls = walls;
-        this.infill01 = infill01;
-        this.zSplit = zSplit;
+        this.wallPerimeters = wallPerimeters;
+        this.fillPercentage = fillPercentage;
     }
-
-    public static Settings fromArgs(String[] args) {
-        if (args.length < 5) {
-            throw new IllegalArgumentException(
-                "Usage: <in.stl> <out.gcode> <walls:int> <infill:0..1> <zSplit:float>"
-            );
-        }
-        int walls = Integer.parseInt(args[2]);
-        float infill = Float.parseFloat(args[3]);
-        float zSplit = Float.parseFloat(args[4]);
-        return new Settings(walls, infill, zSplit);
+    
+    public int getWallPerimeters() {
+    	return wallPerimeters;
     }
-
-    public void validate() {
-        if (walls < 0) throw new IllegalArgumentException("walls must be >= 0");
-        if (infill01 < 0f || infill01 > 1f) throw new IllegalArgumentException("infill must be in [0,1]");
-        // zSplit can be any float, but you might want it >= 0 depending on your coordinate conventions
+    
+    public float getFillPercentage() {
+    	return fillPercentage;
     }
 }

@@ -1,31 +1,25 @@
 package com.model;
 
+import java.util.Iterator;
 import java.util.List;
 
-import com.geometry.Bounds;
 import com.geometry.Triangle;
 
 /**
  * Wrapper class for the list of triangles we use to represent a mesh.
  * 
- * @version 3-6-26
+ * @version 4-1-26
  * @author Zach Brinton
  */
-public class Mesh {
+public class Mesh implements Iterable<Triangle> {
 	private List<Triangle> _mesh;
 	
 	public Mesh(List<Triangle> mesh) {
 		_mesh = mesh;
 	}
 	
-	public List<Triangle> triangles() {
-		return _mesh;
+	@Override
+	public Iterator<Triangle> iterator() {
+		return _mesh.iterator();
 	}
-	
-	public Bounds bounds() {
-		// TODO
-		return null;
-	}
-	
-	
 }
