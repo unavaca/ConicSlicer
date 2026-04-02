@@ -38,11 +38,11 @@ import com.slicing.GCodeMerger;
  * <ol>
  *   <li>Parse the STL into a mesh.</li>
  *   <li>Split the mesh at {@code zSplit} into a lower and upper portion.</li>
- *   <li>Conically slice the lower portion by deforming it into conic space.</li>
- *   <li>Planar slice the deformed lower portion with a normal slicer.</li>
- *   <li>Back-transform the lower portion's G-code into real printer coordinates.</li>
- *   <li>Planar slice the upper portion normally.</li>
- *   <li>Merge the lower conic G-code and upper planar G-code into one final file.</li>
+ *   <li>Planar slice the lower portion.</li>
+ *   <li>Conically slice the upper portion by deforming it into conic space.</li>
+ *   <li>Planar slice the deformed upper portion with a normal slicer.</li>
+ *   <li>Back-transform the upper portion's G-code into real printer coordinates.</li>
+ *   <li>Merge the upper conic G-code and lower planar G-code into one final file.</li>
  * </ol>
  * 
  * <p>The goal of this hybrid approach is to use conic slicing where it is most useful,
@@ -63,45 +63,45 @@ public final class Program {
 		
 		// Parse the STL into a mesh.
 		Mesh mesh = STLParser.parse(stlFile);
-		// Calculate bounds of mesh.
+		// Calculate bounds of the entire mesh.
 		Bounds bounds = new Bounds(mesh);
-		
-		boolean outsideCone = true; // TODO explain this.
-		// TODO explain this
-		ConicMapper mapper = new ConicMapper(bounds, outsideCone);
 		
 		// Split the mesh at zSplit into a lower and upper portion.
 		float eps = 0.0001f; // TODO explain this.
 		MeshSplitter splitMesh = new MeshSplitter(mesh, zSplit, eps);
-		Mesh lower = splitMesh.getLower();
-		Mesh upper = splitMesh.getUpper();
+		Mesh planarMesh = splitMesh.getLower();
+		Mesh conicMesh = splitMesh.getUpper();
 		
-		// Planarly slice the lower portion.
-		File lowerStl = new File("lower.stl");
-		File lowerPlanarGcode = new File("lower_planar.gcode");
+		// TODO explain ts.
+		boolean outsideCone = true;
+		// Calculate the bounds of only the conic portion.
+		Bounds conicBounds = new Bounds(conicMesh);
+		// Map the conic portion to find the center of the cone.
+		ConicMapper mapper = new ConicMapper(conicBounds, outsideCone);
 		
-		STLWriter.writeBinary(lowerStl, lower);
+		// Planar slicing:
+		File planarMeshStl = new File("planar_mesh.stl");
+		File planarGcode = new File("planar.gcode");
+		
+		STLWriter.writeBinary(planarMeshStl, planarMesh);
 		// Add later:
 		// PlanarSlicer.sliceToGCode(lowerStl, settings, lowerPlanarGcode);
 		// For now:
-		ExternalSlicer.sliceToGCode(lowerStl, settings, lowerPlanarGcode);
+		ExternalSlicer.sliceToGCode(planarMeshStl, settings, planarGcode);
 		
-	    // Conically process the upper portion.
-	    //Mesh upperDeformed = ConicMapperUtils.inverseMapMesh(upper, mapper);
+	    // Conic slicing:
+	    Mesh conicMeshDeformed = ConicMapperUtils.inverseMapMesh(conicMesh, mapper);
 
-	    //File upperDeformedStl = new File("upper_deformed.stl");
-	    //File upperPlanarGcode = new File("upper_planar.gcode");
-	    //File upperConicGcode = new File("upper_conic.gcode");
+	    File conicMeshDeformedStl = new File("conic_mesh_deformed.stl");
+	    File conicMeshPlanarGcode = new File("conic_mesh_planar.gcode");
+	    File conicGcode = new File("conic.gcode");
 
-	    //STLWriter.writeBinary(upperDeformedStl, upperDeformed);
-	    // Slice 
-	    //ExternalSlicer.sliceToGCode(upperDeformedStl, settings, upperPlanarGcode);
+	    STLWriter.writeBinary(conicMeshDeformedStl, conicMeshDeformed);
+	    ExternalSlicer.sliceToGCode(conicMeshDeformedStl, settings, conicMeshPlanarGcode);
 	    // TODO explain this
-	    //GCodeBackTransformer.transform(upperPlanarGcode, mapper, settings, upperConicGcode);
-		
-		// Back-transform the lower portion's G-code into real printer coordinates.
-		// Planar slice the upper portion normally.
-		// Merge the lower conic G-code and upper planar G-code into one final file.
-	    //GCodeMerger.merge(lowerPlanarGcode, upperConicGcode, settings, outputFile);
+	    GCodeBackTransformer.transform(conicMeshPlanarGcode, mapper, settings, conicGcode);
+
+		// Merge the conic G-code and planar G-code into one final file.
+	    GCodeMerger.merge(planarGcode, conicGcode, settings, outputFile);
 	}
 }

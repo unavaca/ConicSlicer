@@ -1,7 +1,7 @@
 package com.mapper;
 
+import com.geometry.Bounds;
 import com.geometry.Vertex;
-import com.main.MappedPose;
 
 /**
  * Provides the conic space mapping functions.
@@ -10,17 +10,18 @@ import com.main.MappedPose;
  * inverse mapping (pre-deformation) or direct mapping (back-transform).</p>
  * 
  * @author Zach Brinton
- * @version 3-6-26
+ * @version 4-1-26
  */
 public class ConicMapper {
 	
-	public ConicMapper(float cx, float cy, boolean outsideCone) {
-		// TODO
+	public ConicMapper(Bounds bounds, boolean outsideCone) {
+		
 	}
 	
 	/**
 	 * Lifts each vertex along z by its radial distance from the cone axis; records rotation angle.
-	 * TODO
+	 * 
+	 * This is used in STL deformation.
 	 * @param p TODO
 	 * @return TODO
 	 */
@@ -31,6 +32,7 @@ public class ConicMapper {
 	
 	/**
 	 * Given a deformed vertex {@code (x, y, z')}, computes the original height {@code z = z' - distance(x,y)} and the rotation angle.
+	 * 
 	 * This is used when back-transforming G-code.
 	 * 
 	 * @param p the deformed vertex (x, y, z') // TODO explain z prime.
