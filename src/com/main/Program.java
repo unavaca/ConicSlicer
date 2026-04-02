@@ -69,8 +69,8 @@ public final class Program {
 		// Split the mesh at zSplit into a lower and upper portion.
 		float eps = 0.0001f; // TODO explain this.
 		MeshSplitter splitMesh = new MeshSplitter(mesh, zSplit, eps);
-		Mesh planarMesh = splitMesh.getLower();
-		Mesh conicMesh = splitMesh.getUpper();
+		Mesh planarMesh = splitMesh.getLowerMesh();
+		Mesh conicMesh = splitMesh.getUpperMesh();
 		
 		// TODO explain ts.
 		boolean outsideCone = true;
