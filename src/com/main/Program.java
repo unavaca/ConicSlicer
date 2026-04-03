@@ -49,15 +49,18 @@ import com.slicing.GCodeMerger;
  * while keeping the rest of the print compatible with ordinary planar slicing.</p>
  * 
  * @author Zach Brinton
- * @version 4-1-26
+ * @version 4-3-26
  */
 public final class Program {
 	public static void main(String[] args) {
+		// Get system args.
 		File stlFile = new File(args[0]);
 		File outputFile = new File(args[1]);
 		int wallPerimeters = Integer.parseInt(args[2]);
 		float fillPercentage = Float.parseFloat(args[3]); // A float value from 0.0 to 1.0.
 		float zSplit = Float.parseFloat(args[4]);
+		
+		
 		// Build settings used by slicer.
 		Settings settings = new Settings(wallPerimeters, fillPercentage);
 		
@@ -78,6 +81,9 @@ public final class Program {
 		Bounds conicBounds = new Bounds(conicMesh);
 		// Map the conic portion to find the center of the cone.
 		ConicMapper mapper = new ConicMapper(conicBounds, outsideCone);
+		
+		
+		// Not done yet:
 		
 		// Planar slicing:
 		File planarMeshStl = new File("planar_mesh.stl");

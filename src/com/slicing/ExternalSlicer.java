@@ -8,6 +8,8 @@ import com.model.Settings;
 /**
  * This calls cura for planar gcode, eventually
  * we will have our own planar slicer.
+ * 
+ * @version 
  */
 public class ExternalSlicer {
 	public ExternalSlicer(String slicerCmd) {

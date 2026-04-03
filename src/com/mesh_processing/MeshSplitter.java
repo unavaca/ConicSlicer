@@ -1,11 +1,9 @@
 package com.mesh_processing;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import com.geometry.Triangle;
+import com.geometry.Vertex;
 import com.model.Mesh;
 
 /**
@@ -64,9 +62,63 @@ public class MeshSplitter {
 			// 		- Two vertices are above and one is below, which results in a single triangle below and a single trapezoid above.
 			
 			boolean moreAbove = (zAbove[0] == zAbove[1]) ? zAbove[0] : zAbove[2];
-			// Case 1:
+			
+			float x, y, z;
+			
+			Vertex v1, v2 = null, v3, v4, v5; // These will be the new vertices created by splitting the triangle.
+			
+			
+			// The following complicated code assigns v1 to the highest vertex, and v2 and v3 to the other two vertices.
+			if (zAbove[0]) {
+				v1 = triangle.v1;
+			} else {
+				v2 = triangle.v1;
+			}
+			
+			if (zAbove[1]) {
+				v1 = triangle.v2;
+			} else {
+				v3 = triangle.v2;
+			}
+			
+			if (zAbove[2]) {
+				v1 = triangle.v3;
+			} else {
+				if (v2 == null) {
+					v2 = triangle.v3;
+				} else {
+					v3 = triangle.v3;
+				}
+			}
+			
+			
+			
+			// Case 1, more below:
+			if (!moreAbove) {
+				// Calculate for above triangle.
+				
+				// v1 should be the highest z value.
+				v1 = zAbove[0] ? triangle.v1 : (zAbove[1] ? triangle.v2 : triangle.v3);
+				
+				
+				
+				
+				
+				
+				
+				// Calculate for above trapezoid.
+				
+				
+				
+				
+				
+			}
+			
+			
 			if (moreAbove) {
-				Triangle upperTriangle = new Triangle();
+				float x1;
+				float y1;
+				float z1;
 			}
 			
 			
