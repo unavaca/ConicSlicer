@@ -39,31 +39,39 @@ public class MeshSplitter {
 		// Iterate over the triangles in the mesh and add them to the upper or lower mesh based on their z-values.
 		// Ignore the y and x values of the vertices.
 		for (var triangle : mesh) {
-			ArrayList<Float> zValues = (ArrayList<Float>) Arrays.asList(new Float[]{
-				triangle.v1.z,
-				triangle.v2.z,
-				triangle.v3.z
-			});
-			
-			// Get max value from zValues.
-			float maxZ = Collections.max(zValues);
-			// Get min value from zValues.
-			float minZ = Collections.min(zValues);
-			
-			boolean onOrAbove = minZ >= zSplit - eps;
-			boolean below = maxZ <= zSplit - eps;
+			boolean[] zAbove = new boolean[] {
+				triangle.v1.z >= zSplit - eps,
+				triangle.v2.z >= zSplit - eps,
+				triangle.v3.z >= zSplit - eps
+			};
 			
 			// If every vertex is above the split plane, add the triangle to the upper mesh.
-			if (onOrAbove && !below) {
+			if (zAbove[0] && zAbove[1] && zAbove[2]) {
 				upperMesh.add(triangle);
 				return;
 			}
 			
 			// If every vertex is below the split plane, add the triangle to the lower mesh.
-			if (below && !onOrAbove) {
+			if (!zAbove[0] && !zAbove[1] && !zAbove[2]) {
 				lowerMesh.add(triangle);
 				return;
 			}
+			
+			// If either of these cases have not been hit yet, we know the triangle is split by the plane.
+			
+			// There are two possibilites:
+			// 		- One vertex is above and two are below, which results in a single triangle above and a single trapezoid below.
+			// 		- Two vertices are above and one is below, which results in a single triangle below and a single trapezoid above.
+			
+			boolean moreAbove = (zAbove[0] == zAbove[1]) ? zAbove[0] : zAbove[2];
+			// Case 1:
+			if (moreAbove) {
+				Triangle upperTriangle = new Triangle();
+			}
+			
+			
+			
+			
 			
 			// If some vertices are above and some below, we need to split the triangle along zSplit, which results into two trapezoids.
 			
