@@ -1,5 +1,6 @@
 package com.mesh_processing;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.geometry.Triangle;
@@ -98,7 +99,6 @@ public class MeshSplitter {
 				// Calculate for above triangle.
 				
 				// v1 should be the highest z value.
-				v1 = zAbove[0] ? triangle.v1 : (zAbove[1] ? triangle.v2 : triangle.v3);
 				
 				
 				
@@ -148,6 +148,49 @@ public class MeshSplitter {
 			
 			
 			
+			
+		}
+	}
+	
+	public MeshSplitter(Mesh mesh, float zSplit, float eps, boolean foo) {
+		ArrayList<Vertex> verts = new ArrayList<>();
+		
+		for (var triangle : mesh) {
+			
+			// Order verts by z height.
+			verts.add(triangle.v1);
+			verts.add(triangle.v2);
+			verts.add(triangle.v3);
+			
+			// Sort the vertices by their z values, low to high.
+			verts.sort(null);
+			
+			// If the lowest vertex is above the split plane, the entire triangle is above.
+			if (verts.get(0).z >= zSplit - eps) {
+				upperMesh.add(triangle);
+				return;
+			}
+			
+			// If the highest vertex is below the split plane, the entire triangle is below.
+			if (verts.get(2).z < zSplit - eps) {
+				lowerMesh.add(triangle);
+				return;
+			}
+			
+			// Otherwise, the triangle is split by the plane in some way.
+			
+			float zRatio = zSplit - verts.get(0).z / verts.get(2).z - verts.get(0).z;
+			float newX = verts.get(0).x + zRatio * (verts.get(2).x - verts.get(0).x);
+			float newY = verts.get(0).y + zRatio * (verts.get(2).y - verts.get(0).y);
+			Vertex v4 = new Vertex(newX, newY, zSplit);
+			
+			zRatio = zSplit - verts.get(0).z / verts.get(1).z - verts.get(0).z;
+			newX = verts.get(0).x + zRatio * (verts.get(1).x - verts.get(0).x);
+			newY = verts.get(0).y + zRatio * (verts.get(1).y - verts.get(0).y);
+			Vertex v5 = new Vertex(newX, newY, zSplit);
+			
+			lowerMesh.add(new Triangle(triangle.normal, verts.get(0), verts.get(1), v5));
+			upperMesh.add(new Triangle(triangle.normal,verts.get(1), verts.get(2), v4));
 			
 		}
 	}
