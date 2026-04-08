@@ -28,4 +28,13 @@ public class Mesh implements Iterable<Triangle> {
 	public Iterator<Triangle> iterator() {
 		return _mesh.iterator();
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (var triangle : _mesh) {
+			sb.append(triangle.toString()).append("\n");
+		}
+		return sb.toString();
+	}
 }

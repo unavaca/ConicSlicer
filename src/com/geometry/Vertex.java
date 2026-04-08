@@ -7,9 +7,9 @@ package com.geometry;
  * <p>Note the interchanging use of the term vector to describe this vertex.</p>
  * 
  * @author Zach Brinton
- * @version 3-5-26
+ * @version 4-8-26
  */
-public final class Vertex {
+public final class Vertex implements Comparable<Vertex> {
 	public float x;
 	public float y;
 	public float z;
@@ -115,5 +115,13 @@ public final class Vertex {
 		h = 31 * h + hy;
 		h = 31 * h + hz;
 		return h;
+	}
+
+	/**
+	 * Compares vertices by their z values.
+	 */
+	@Override
+	public int compareTo(Vertex o) {
+		return Float.compare(this.z, o.z);
 	}
 }
