@@ -9,7 +9,9 @@ import com.mesh_processing.MeshSplitter;
 import com.model.Mesh;
 import com.model.STLParser;
 import com.model.Settings;
+import com.slicing.ExternalSlicer;
 import com.slicing.GCodeMerger;
+import com.slicing.STLWriter;
 
 /**
  * This program converts an input STL into G-code for our 4-axis printer.

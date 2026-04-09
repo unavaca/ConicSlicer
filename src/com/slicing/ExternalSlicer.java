@@ -16,7 +16,7 @@ public class ExternalSlicer {
 		// TODO
 	}
 	
-	public File sliceToGCode(File stl, Settings s, File outGcode) throws IOException, InterruptedException{
+	public static File sliceToGCode(File stl, Settings s, File outGcode) throws IOException, InterruptedException{
 		// TODO
 		return null;
 	}

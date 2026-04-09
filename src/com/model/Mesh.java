@@ -24,6 +24,14 @@ public class Mesh implements Iterable<Triangle> {
 		return _mesh.add(triangle);
 	}
 	
+	public List<Triangle> triangles() {
+		return _mesh;
+	}
+	
+	public int size() {
+		return _mesh.size();
+	}
+	
 	@Override
 	public Iterator<Triangle> iterator() {
 		return _mesh.iterator();
