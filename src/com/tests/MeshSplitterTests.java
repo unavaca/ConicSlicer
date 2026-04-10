@@ -21,7 +21,7 @@ public class MeshSplitterTests {
 		
 		// Get system args.
 		File stlFile = new File("src/resources/3DBenchy.stl");
-		float zSplit = 24.0f;
+		float zSplit = 10.0f;
 		
 		// Parse the STL into a mesh.
 		Mesh mesh = STLParser.parse(stlFile);
@@ -39,8 +39,7 @@ public class MeshSplitterTests {
 		STLWriter.writeBinary(lower, lowerMesh);
 		STLWriter.writeBinary(upper, upperMesh);
 		
-		MeshViewer.show(lowerMesh);
-		MeshViewer.show(upperMesh);
-		MeshViewer.show(mesh);
+		MeshViewer.show(lowerMesh, "lower");
+		MeshViewer.show(upperMesh, "upper");
 	}
 }

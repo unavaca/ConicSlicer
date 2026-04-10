@@ -128,9 +128,13 @@ public class MeshViewer extends JPanel {
 
         return new Point(sx, sy);
     }
-
+    
     public static void show(Mesh mesh) {
-        JFrame frame = new JFrame("Mesh Viewer");
+    	show(mesh, "Mesh Viewer");
+    }
+
+    public static void show(Mesh mesh, String title) {
+        JFrame frame = new JFrame(title);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 800);
         frame.setLocationRelativeTo(null);

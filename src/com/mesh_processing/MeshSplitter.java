@@ -41,57 +41,129 @@ public class MeshSplitter {
 		upperMesh = new ArrayList<>();
 		
 		for (var triangle : mesh) {
-			verts = new Vertex[3];
+			Vertex v1 = triangle.v1;
+			Vertex v2 = triangle.v2;
+			Vertex v3 = triangle.v3;
 			
-			verts[0] = triangle.v1;
-			verts[1] = triangle.v2;
-			verts[2] = triangle.v3;
+			boolean b1 = v1.z < zSplit - eps;
+			boolean b2 = v2.z < zSplit - eps;
+			boolean b3 = v3.z < zSplit - eps;
 			
-			// Sort the vertices by their z values, low to high.
-			Arrays.sort(verts);
+			int belowCount = 0;
 			
-			// If the lowest vertex is above the split plane, the entire triangle is above.
-			if (verts[0].z >= zSplit - eps) {
+			if (b1) belowCount++;
+			if (b2) belowCount++;
+			if (b3) belowCount++;
+			
+			// All vertices above:
+			if (belowCount == 0) {
 				upperMesh.add(triangle);
 				continue;
 			}
 			
-			// If the highest vertex is below the split plane, the entire triangle is below.
-			if (verts[2].z < zSplit - eps) {
+			// All vertices below:
+			if (belowCount == 3) {
 				lowerMesh.add(triangle);
 				continue;
 			}
 			
-			// Otherwise, the triangle is split by the plane in some way.
-			
-			// placeholder:
-			upperMesh.add(triangle);
-			
-			
-			/*
-			float zRatio = zSplit - verts.get(0).z / verts.get(2).z - verts.get(0).z;
-			float newX = verts.get(0).x + zRatio * (verts.get(2).x - verts.get(0).x);
-			float newY = verts.get(0).y + zRatio * (verts.get(2).y - verts.get(0).y);
-			Vertex v4 = new Vertex(newX, newY, zSplit);
-			
-			zRatio = zSplit - verts.get(0).z / verts.get(1).z - verts.get(0).z;
-			newX = verts.get(0).x + zRatio * (verts.get(1).x - verts.get(0).x);
-			newY = verts.get(0).y + zRatio * (verts.get(1).y - verts.get(0).y);
-			Vertex v5 = new Vertex(newX, newY, zSplit);
-			
-			lowerMesh.add(new Triangle(triangle.normal, verts.get(0), verts.get(1), v5));
-			upperMesh.add(new Triangle(triangle.normal,verts.get(1), verts.get(2), v4));
-			
-			*/
-			
+			// One below, two above:
+			if (belowCount == 1) {
+				Vertex below, above1, above2;
+				
+				if (b1) {
+					below = v1;
+					above1 = v2;
+					above2 = v3;
+				} else if (b2) {
+					below = v2;
+					above1 = v3;
+					above2 = v1;
+				} else {
+					below = v3;
+					above1 = v1;
+					above2 = v2;
+				}
+				
+				Vertex p1 = intersectAtZ(below, above1, zSplit);
+				Vertex p2 = intersectAtZ(below, above2, zSplit);
+				
+				// Lower piece: one triangle
+				lowerMesh.add(makeTriangle(below, p1, p2));
+				
+				upperMesh.add(makeTriangle(above1, above2, p2));
+				upperMesh.add(makeTriangle(above1, p2, p1));
+			} else {
+				// belowCount == 2
+				Vertex above, below1, below2;
+				
+				if (!b1) {
+					above = v1;
+					below1 = v2;
+					below2 = v3;
+				} else if (!b2) {
+					above = v2;
+					below1 = v3;
+					below2 = v1;
+				} else {
+					above = v3;
+					below1 = v1;
+					below2 = v2;
+				}
+				
+				Vertex p1 = intersectAtZ(above, below1, zSplit);
+				Vertex p2 = intersectAtZ(above, below2, zSplit);
+				
+				upperMesh.add(makeTriangle(above, p1, p2));
+				
+				lowerMesh.add(makeTriangle(below1, below2, p2));
+				lowerMesh.add(makeTriangle(below1, p2, p1));
+			}
 		}
 	}
 	
 	public Mesh getLowerMesh() {
-		return new Mesh(upperMesh);
+		return new Mesh(lowerMesh);
 	}
 	
 	public Mesh getUpperMesh() {
 		return new Mesh(upperMesh);
+	}
+	
+	private Vertex intersectAtZ(Vertex a, Vertex b, float zSplit) {
+	    float t = (zSplit - a.z) / (b.z - a.z);
+
+	    float x = a.x + t * (b.x - a.x);
+	    float y = a.y + t * (b.y - a.y);
+	    float z = zSplit;
+
+	    return new Vertex(x, y, z);
+	}
+	
+	private Triangle makeTriangle(Vertex a, Vertex b, Vertex c) {
+	    Vertex normal = computeNormal(a, b, c);
+	    return new Triangle(normal, a, b, c);
+	}
+
+	private Vertex computeNormal(Vertex a, Vertex b, Vertex c) {
+	    float ux = b.x - a.x;
+	    float uy = b.y - a.y;
+	    float uz = b.z - a.z;
+
+	    float vx = c.x - a.x;
+	    float vy = c.y - a.y;
+	    float vz = c.z - a.z;
+
+	    float nx = uy * vz - uz * vy;
+	    float ny = uz * vx - ux * vz;
+	    float nz = ux * vy - uy * vx;
+
+	    float len = (float)Math.sqrt(nx * nx + ny * ny + nz * nz);
+
+	    if (len == 0f) {
+	        return new Vertex(0f, 0f, 0f);
+	    }
+
+	    return new Vertex(nx / len, ny / len, nz / len);
 	}
 }
