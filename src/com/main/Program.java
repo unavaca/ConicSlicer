@@ -1,6 +1,7 @@
 package com.main;
 
 import java.io.File;
+import java.io.IOException;
 
 import com.geometry.Bounds;
 import com.mapper.ConicMapper;
@@ -10,6 +11,7 @@ import com.model.Mesh;
 import com.model.STLParser;
 import com.model.Settings;
 import com.slicing.ExternalSlicer;
+import com.slicing.GCodeBackTransformer;
 import com.slicing.GCodeMerger;
 import com.slicing.STLWriter;
 
@@ -54,7 +56,7 @@ import com.slicing.STLWriter;
  * @version 4-3-26
  */
 public final class Program {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException, InterruptedException {
 		// Get system args.
 		File stlFile = new File(args[0]);
 		File outputFile = new File(args[1]);

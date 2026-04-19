@@ -38,7 +38,7 @@ public class ConicMapper {
 	 * @param p the deformed vertex (x, y, z') // TODO explain z prime.
 	 * @return // TODO
 	 */
-	public MappedPose directMap(Vertex p) {
+	public Object directMap(Vertex p) {
 		throw new UnsupportedOperationException();
 		// TODO
 	}

@@ -1,9 +1,8 @@
-package com.tests;
+package com.debug;
 
 import java.io.File;
 import java.io.IOException;
 
-import com.gui.MeshViewer;
 import com.mesh_processing.MeshSplitter;
 import com.model.Mesh;
 import com.model.STLParser;
@@ -16,12 +15,10 @@ import com.slicing.STLWriter;
  * @version 4-8-26
  */
 public class MeshSplitterTests {
-
 	public static void main(String[] args) throws IOException {
-		
 		// Get system args.
 		File stlFile = new File("src/resources/3DBenchy.stl");
-		float zSplit = 10.0f;
+		float zSplit = 4.0f;
 		
 		// Parse the STL into a mesh.
 		Mesh mesh = STLParser.parse(stlFile);
