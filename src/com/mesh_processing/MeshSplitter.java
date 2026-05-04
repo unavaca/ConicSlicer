@@ -128,17 +128,23 @@ public class MeshSplitter {
 				lowerMesh.add(makeTriangle(below1, p2, p1));
 			}
 			
-			
 			edgeLoops = buildLoops(segments, eps);
 			
 			
 			for (List<Vertex> loop : edgeLoops) {
-				Vertex center = findLoopCenter(loop);
+				System.out.println("Loop:");
 				for (Vertex v : loop) {
-					upperMesh.add(new Triangle(new Vertex(0f, 0f, -1f), new Vertex(center.x, center.y, zSplit), v, loop.get((loop.indexOf(v) + 1) % loop.size())));
-					lowerMesh.add(new Triangle(new Vertex(0f, 0f, 1f), new Vertex(center.x, center.y, zSplit), loop.get((loop.indexOf(v) + 1) % loop.size()), v));
+					System.out.println(v);
 				}
 			}
+			
+//			for (List<Vertex> loop : edgeLoops) {
+//				Vertex center = findLoopCenter(loop);
+//				for (Vertex v : loop) {
+//					upperMesh.add(new Triangle(new Vertex(0f, 0f, -1f), new Vertex(center.x, center.y, zSplit), v, loop.get((loop.indexOf(v) + 1) % loop.size())));
+//					lowerMesh.add(new Triangle(new Vertex(0f, 0f, 1f), new Vertex(center.x, center.y, zSplit), loop.get((loop.indexOf(v) + 1) % loop.size()), v));
+//				}
+//			}
 			
 			// find all loops
 			// figure out which loops are outer boundaries and which are holes

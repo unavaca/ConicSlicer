@@ -18,4 +18,9 @@ public final class Segment {
 		this.v1 = v1;
 		this.v2 = v2;
 	}
+	
+	@Override
+	public String toString() {
+		return v1 + " to " + v2;
+	}
 }
