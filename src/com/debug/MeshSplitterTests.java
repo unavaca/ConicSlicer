@@ -17,8 +17,8 @@ import com.slicing.STLWriter;
 public class MeshSplitterTests {
 	public static void main(String[] args) throws IOException {
 		// Get system args.
-		File stlFile = new File("src/resources/3DBenchy.stl");
-		float zSplit = 4.0f;
+		File stlFile = new File("src/resources/twin_towers.stl");
+		float zSplit = 40.0f;
 		
 		// Parse the STL into a mesh.
 		Mesh mesh = STLParser.parse(stlFile);
@@ -30,8 +30,8 @@ public class MeshSplitterTests {
 		Mesh lowerMesh = splitMesh.getLowerMesh();
 		Mesh upperMesh = splitMesh.getUpperMesh();
 		
-		File lower = new File("src/out/lower_benchy.stl");
-		File upper = new File("src/out/upper_benchy.stl");
+		File lower = new File("src/out/u_twin_towers.stl");
+		File upper = new File("src/out/l_twin_towers.stl");
 		
 		STLWriter.writeBinary(lower, lowerMesh);
 		STLWriter.writeBinary(upper, upperMesh);
