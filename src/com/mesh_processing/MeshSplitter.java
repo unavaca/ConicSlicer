@@ -1,10 +1,10 @@
 package com.mesh_processing;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+// import java.util.HashSet;
 import java.util.List;
 
-import com.geometry.Segment;
+// import com.geometry.Segment;
 import com.geometry.Triangle;
 import com.geometry.Vertex;
 import com.model.Mesh;
@@ -18,8 +18,8 @@ import com.model.Mesh;
 public class MeshSplitter {
 	private List<Triangle> lowerMesh;
 	private List<Triangle> upperMesh;
-	private HashSet<Segment> segments;
-	private List<List<Vertex>> edgeLoops;
+//	private HashSet<Segment> segments;
+//	private List<List<Vertex>> edgeLoops;
 	
 	/**
 	 * Creates a splitter that partitions the triangles of a mesh into upper and lower
@@ -41,7 +41,7 @@ public class MeshSplitter {
 	public MeshSplitter(Mesh mesh, float zSplit, float eps) {
 		lowerMesh = new ArrayList<>();
 		upperMesh = new ArrayList<>();
-		segments = new HashSet<>();
+		// segments = new HashSet<>();
 		
 		for (var triangle : mesh) {
 			Vertex v1 = triangle.v1;
@@ -91,8 +91,8 @@ public class MeshSplitter {
 				Vertex p1 = intersectAtZ(below, above1, zSplit);
 				Vertex p2 = intersectAtZ(below, above2, zSplit);
 				
-				Segment s = new Segment(p1, p2);
-				segments.add(s);
+				// Segment s = new Segment(p1, p2);
+				// segments.add(s);
 				
 				lowerMesh.add(makeTriangle(below, p1, p2));
 				
@@ -119,8 +119,8 @@ public class MeshSplitter {
 				Vertex p1 = intersectAtZ(above, below1, zSplit);
 				Vertex p2 = intersectAtZ(above, below2, zSplit);
 				
-				Segment s = new Segment(p1, p2);
-				segments.add(s);
+				// Segment s = new Segment(p1, p2);
+				// segments.add(s);
 				
 				upperMesh.add(makeTriangle(above, p1, p2));
 				
@@ -128,15 +128,14 @@ public class MeshSplitter {
 				lowerMesh.add(makeTriangle(below1, p2, p1));
 			}
 			
-			edgeLoops = buildLoops(segments, eps);
+			// edgeLoops = buildLoops(segments, eps);
 			
-			
-			for (List<Vertex> loop : edgeLoops) {
-				System.out.println("Loop:");
-				for (Vertex v : loop) {
-					System.out.println(v);
-				}
-			}
+//			for (List<Vertex> loop : edgeLoops) {
+//				System.out.println("Loop:");
+//				for (Vertex v : loop) {
+//					System.out.println(v);
+//				}
+//			}
 			
 //			for (List<Vertex> loop : edgeLoops) {
 //				Vertex center = findLoopCenter(loop);
@@ -220,82 +219,82 @@ public class MeshSplitter {
 	    return new Vertex(nx / len, ny / len, nz / len);
 	}
 	
-	private Vertex findLoopCenter(List<Vertex> loop) {
-	    float xSum = 0f;
-	    float ySum = 0f;
-	    float zSum = 0f;
-
-	    for (Vertex v : loop) {
-	        xSum += v.x;
-	        ySum += v.y;
-	        zSum += v.z;
-	    }
-
-	    int count = loop.size();
-	    return new Vertex(xSum / count, ySum / count, zSum / count);
-	}
+//	private Vertex findLoopCenter(List<Vertex> loop) {
+//	    float xSum = 0f;
+//	    float ySum = 0f;
+//	    float zSum = 0f;
+//
+//	    for (Vertex v : loop) {
+//	        xSum += v.x;
+//	        ySum += v.y;
+//	        zSum += v.z;
+//	    }
+//
+//	    int count = loop.size();
+//	    return new Vertex(xSum / count, ySum / count, zSum / count);
+//	}
 	
-	private List<Vertex> buildLoop(List<Segment> unused, float eps) {
-	    Segment first = unused.remove(0);
-
-	    List<Vertex> loop = new ArrayList<>();
-	    loop.add(first.v1);
-	    loop.add(first.v2);
-
-	    while (true) {
-	        Vertex end = loop.get(loop.size() - 1);
-
-	        // If we got back to the start, loop is closed.
-	        if (loop.size() > 2 && samePoint(end, loop.get(0), eps)) {
-	            loop.remove(loop.size() - 1);
-	            return loop;
-	        }
-
-	        boolean foundNext = false;
-
-	        for (int i = 0; i < unused.size(); i++) {
-	            Segment s = unused.get(i);
-
-	            if (samePoint(end, s.v1, eps)) {
-	                loop.add(s.v2);
-	                unused.remove(i);
-	                foundNext = true;
-	                break;
-	            }
-
-	            if (samePoint(end, s.v2, eps)) {
-	                loop.add(s.v1);
-	                unused.remove(i);
-	                foundNext = true;
-	                break;
-	            }
-	        }
-
-	        if (!foundNext) {
-	            // Open loop, something went wrong or mesh is not closed.
-	            return loop;
-	        }
-	    }
-	}
+//	private List<Vertex> buildLoop(List<Segment> unused, float eps) {
+//	    Segment first = unused.remove(0);
+//
+//	    List<Vertex> loop = new ArrayList<>();
+//	    loop.add(first.v1);
+//	    loop.add(first.v2);
+//
+//	    while (true) {
+//	        Vertex end = loop.get(loop.size() - 1);
+//
+//	        // If we got back to the start, loop is closed.
+//	        if (loop.size() > 2 && samePoint(end, loop.get(0), eps)) {
+//	            loop.remove(loop.size() - 1);
+//	            return loop;
+//	        }
+//
+//	        boolean foundNext = false;
+//
+//	        for (int i = 0; i < unused.size(); i++) {
+//	            Segment s = unused.get(i);
+//
+//	            if (samePoint(end, s.v1, eps)) {
+//	                loop.add(s.v2);
+//	                unused.remove(i);
+//	                foundNext = true;
+//	                break;
+//	            }
+//
+//	            if (samePoint(end, s.v2, eps)) {
+//	                loop.add(s.v1);
+//	                unused.remove(i);
+//	                foundNext = true;
+//	                break;
+//	            }
+//	        }
+//
+//	        if (!foundNext) {
+//	            // Open loop, something went wrong or mesh is not closed.
+//	            return loop;
+//	        }
+//	    }
+//	}
 	
-	private List<List<Vertex>> buildLoops(HashSet<Segment> segments, float eps) {
-	    List<Segment> unused = new ArrayList<>(segments);
-	    List<List<Vertex>> loops = new ArrayList<>();
-
-	    while (!unused.isEmpty()) {
-	        List<Vertex> loop = buildLoop(unused, eps);
-
-	        if (loop.size() >= 3) {
-	            loops.add(loop);
-	        }
-	    }
-
-	    return loops;
-	}
+//	private List<List<Vertex>> buildLoops(HashSet<Segment> segments, float eps) {
+//	    List<Segment> unused = new ArrayList<>(segments);
+//	    List<List<Vertex>> loops = new ArrayList<>();
+//
+//	    while (!unused.isEmpty()) {
+//	        List<Vertex> loop = buildLoop(unused, eps);
+//
+//	        if (loop.size() >= 3) {
+//	            loops.add(loop);
+//	        }
+//	    }
+//
+//	    return loops;
+//	}
 	
-	private boolean samePoint(Vertex a, Vertex b, float eps) {
-	    return Math.abs(a.x - b.x) < eps &&
-	           Math.abs(a.y - b.y) < eps &&
-	           Math.abs(a.z - b.z) < eps;
-	}
+//	private boolean samePoint(Vertex a, Vertex b, float eps) {
+//	    return Math.abs(a.x - b.x) < eps &&
+//	           Math.abs(a.y - b.y) < eps &&
+//	           Math.abs(a.z - b.z) < eps;
+//	}
 }

@@ -97,7 +97,7 @@ public final class Program {
 		// Add later:
 		// PlanarSlicer.sliceToGCode(lowerStl, settings, lowerPlanarGcode);
 		// For now:
-		ExternalSlicer.sliceToGCode(planarMeshStl, settings, planarGcode);
+		PlanarSlicer.slice(planarMeshStl, settings, planarGcode);
 		
 	    // Conic slicing:
 	    Mesh conicMeshDeformed = ConicMapperUtils.inverseMapMesh(conicMesh, mapper);
