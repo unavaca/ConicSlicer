@@ -91,10 +91,9 @@ public class MeshSplitter {
 				Vertex p1 = intersectAtZ(below, above1, zSplit);
 				Vertex p2 = intersectAtZ(below, above2, zSplit);
 				
-				// Segment s = new Segment(p1, p2);
-				// segments.add(s);
+				Triangle lowerTriangle = makeTriangle(below, p1, p2);
 				
-				lowerMesh.add(makeTriangle(below, p1, p2));
+				lowerMesh.add(lowerTriangle);
 				
 				upperMesh.add(makeTriangle(above1, above2, p2));
 				upperMesh.add(makeTriangle(above1, p2, p1));
@@ -119,59 +118,12 @@ public class MeshSplitter {
 				Vertex p1 = intersectAtZ(above, below1, zSplit);
 				Vertex p2 = intersectAtZ(above, below2, zSplit);
 				
-				// Segment s = new Segment(p1, p2);
-				// segments.add(s);
-				
 				upperMesh.add(makeTriangle(above, p1, p2));
 				
 				lowerMesh.add(makeTriangle(below1, below2, p2));
 				lowerMesh.add(makeTriangle(below1, p2, p1));
 			}
-			
-			// edgeLoops = buildLoops(segments, eps);
-			
-//			for (List<Vertex> loop : edgeLoops) {
-//				System.out.println("Loop:");
-//				for (Vertex v : loop) {
-//					System.out.println(v);
-//				}
-//			}
-			
-//			for (List<Vertex> loop : edgeLoops) {
-//				Vertex center = findLoopCenter(loop);
-//				for (Vertex v : loop) {
-//					upperMesh.add(new Triangle(new Vertex(0f, 0f, -1f), new Vertex(center.x, center.y, zSplit), v, loop.get((loop.indexOf(v) + 1) % loop.size())));
-//					lowerMesh.add(new Triangle(new Vertex(0f, 0f, 1f), new Vertex(center.x, center.y, zSplit), loop.get((loop.indexOf(v) + 1) % loop.size()), v));
-//				}
-//			}
-			
-			// find all loops
-			// figure out which loops are outer boundaries and which are holes
-			// triangulate the 2D region with holes
-			// turn those 2D triangles back into 3D triangles at zSplit
 		}
-		
-		// We have a hashset of segments that form the edge loop of the split.
-		
-		// 1. start with any segment
-		// 2. find next segment that starts with last one
-		// 3. repeat until we loop back to the start
-		
-		
-		
-		
-		
-		
-		
-		
-		
-//		Vertex center = mesh.center();
-		
-		// Generate caps for the upper and lower meshes using the edge loop.
-//		for (Vertex v : edgeLoop) {
-//			upperMesh.add(new Triangle(new Vertex(0f, 0f, -1f), new Vertex(center.x, center.y, zSplit), v, edgeLoop.get((edgeLoop.indexOf(v) + 1) % edgeLoop.size())));
-//			lowerMesh.add(new Triangle(new Vertex(0f, 0f, 1f), new Vertex(center.x, center.y, zSplit), edgeLoop.get((edgeLoop.indexOf(v) + 1) % edgeLoop.size()), v));
-//		}
 	}
 	
 	public Mesh getLowerMesh() {
