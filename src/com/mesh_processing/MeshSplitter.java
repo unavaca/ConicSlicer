@@ -12,14 +12,12 @@ import com.model.Mesh;
 /**
  * This is a wrapper class designed to split a given mesh and hold its two halves split along a zSplit index.
  * 
- * @version 5-4-26
+ * @version 5-23-26
  * @author Zach Brinton
  */
 public class MeshSplitter {
 	private List<Triangle> lowerMesh;
 	private List<Triangle> upperMesh;
-//	private HashSet<Segment> segments;
-//	private List<List<Vertex>> edgeLoops;
 	
 	/**
 	 * Creates a splitter that partitions the triangles of a mesh into upper and lower
@@ -41,7 +39,6 @@ public class MeshSplitter {
 	public MeshSplitter(Mesh mesh, float zSplit, float eps) {
 		lowerMesh = new ArrayList<>();
 		upperMesh = new ArrayList<>();
-		// segments = new HashSet<>();
 		
 		for (var triangle : mesh) {
 			Vertex v1 = triangle.v1;
@@ -124,14 +121,22 @@ public class MeshSplitter {
 				lowerMesh.add(makeTriangle(below1, p2, p1));
 			}
 		}
+		
+		capMesh(new Mesh(lowerMesh), zSplit);
+		capMesh(new Mesh(upperMesh), zSplit);
 	}
-	
+
 	public Mesh getLowerMesh() {
 		return new Mesh(lowerMesh);
 	}
 	
 	public Mesh getUpperMesh() {
 		return new Mesh(upperMesh);
+	}
+	
+	private void capMesh(Mesh mesh, float zSplit) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Capping not implemented yet");
 	}
 	
 	private Vertex intersectAtZ(Vertex a, Vertex b, float zSplit) {
@@ -170,83 +175,4 @@ public class MeshSplitter {
 
 	    return new Vertex(nx / len, ny / len, nz / len);
 	}
-	
-//	private Vertex findLoopCenter(List<Vertex> loop) {
-//	    float xSum = 0f;
-//	    float ySum = 0f;
-//	    float zSum = 0f;
-//
-//	    for (Vertex v : loop) {
-//	        xSum += v.x;
-//	        ySum += v.y;
-//	        zSum += v.z;
-//	    }
-//
-//	    int count = loop.size();
-//	    return new Vertex(xSum / count, ySum / count, zSum / count);
-//	}
-	
-//	private List<Vertex> buildLoop(List<Segment> unused, float eps) {
-//	    Segment first = unused.remove(0);
-//
-//	    List<Vertex> loop = new ArrayList<>();
-//	    loop.add(first.v1);
-//	    loop.add(first.v2);
-//
-//	    while (true) {
-//	        Vertex end = loop.get(loop.size() - 1);
-//
-//	        // If we got back to the start, loop is closed.
-//	        if (loop.size() > 2 && samePoint(end, loop.get(0), eps)) {
-//	            loop.remove(loop.size() - 1);
-//	            return loop;
-//	        }
-//
-//	        boolean foundNext = false;
-//
-//	        for (int i = 0; i < unused.size(); i++) {
-//	            Segment s = unused.get(i);
-//
-//	            if (samePoint(end, s.v1, eps)) {
-//	                loop.add(s.v2);
-//	                unused.remove(i);
-//	                foundNext = true;
-//	                break;
-//	            }
-//
-//	            if (samePoint(end, s.v2, eps)) {
-//	                loop.add(s.v1);
-//	                unused.remove(i);
-//	                foundNext = true;
-//	                break;
-//	            }
-//	        }
-//
-//	        if (!foundNext) {
-//	            // Open loop, something went wrong or mesh is not closed.
-//	            return loop;
-//	        }
-//	    }
-//	}
-	
-//	private List<List<Vertex>> buildLoops(HashSet<Segment> segments, float eps) {
-//	    List<Segment> unused = new ArrayList<>(segments);
-//	    List<List<Vertex>> loops = new ArrayList<>();
-//
-//	    while (!unused.isEmpty()) {
-//	        List<Vertex> loop = buildLoop(unused, eps);
-//
-//	        if (loop.size() >= 3) {
-//	            loops.add(loop);
-//	        }
-//	    }
-//
-//	    return loops;
-//	}
-	
-//	private boolean samePoint(Vertex a, Vertex b, float eps) {
-//	    return Math.abs(a.x - b.x) < eps &&
-//	           Math.abs(a.y - b.y) < eps &&
-//	           Math.abs(a.z - b.z) < eps;
-//	}
 }

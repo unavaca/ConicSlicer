@@ -10,7 +10,6 @@ import com.mesh_processing.MeshSplitter;
 import com.model.Mesh;
 import com.model.STLParser;
 import com.model.Settings;
-import com.slicing.ExternalSlicer;
 import com.slicing.GCodeBackTransformer;
 import com.slicing.GCodeMerger;
 import com.slicing.STLWriter;
@@ -97,7 +96,7 @@ public final class Program {
 		// Add later:
 		// PlanarSlicer.sliceToGCode(lowerStl, settings, lowerPlanarGcode);
 		// For now:
-		PlanarSlicer.slice(planarMeshStl, settings, planarGcode);
+		//PlanarSlicer.slice(planarMeshStl, settings, planarGcode);
 		
 	    // Conic slicing:
 	    Mesh conicMeshDeformed = ConicMapperUtils.inverseMapMesh(conicMesh, mapper);
@@ -107,7 +106,7 @@ public final class Program {
 	    File conicGcode = new File("conic.gcode");
 
 	    STLWriter.writeBinary(conicMeshDeformedStl, conicMeshDeformed);
-	    ExternalSlicer.sliceToGCode(conicMeshDeformedStl, settings, conicMeshPlanarGcode);
+	    //ExternalSlicer.sliceToGCode(conicMeshDeformedStl, settings, conicMeshPlanarGcode);
 	    // TODO explain this
 	    GCodeBackTransformer.transform(conicMeshPlanarGcode, mapper, settings, conicGcode);
 
